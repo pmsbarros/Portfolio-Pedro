@@ -16,3 +16,6 @@ usethis::use_github()
 usethis::use_github_pages("master", "/docs")
 
 file.create(".nojekyll")
+
+distill::create_blog(".", "Portfolio Pedro", gh_pages = TRUE)
+
