@@ -19,7 +19,3 @@ file.create(".nojekyll")
 
 distill::create_blog(".", "Portfolio Pedro", gh_pages = TRUE)
 
-distill::create_post(title = "Análise da base RAIS")
-
-
-

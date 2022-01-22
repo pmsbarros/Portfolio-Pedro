@@ -1,0 +1,42 @@
+---
+title: "Analise RAIS"
+output: html_document
+---
+
+```{r}
+#Pacotes utilizados nesta analise:
+library(bigrquery)
+library(dplyr)
+
+```
+
+#Conectando
+Conectando com o datalake da Base dos Dados:
+
+```{r}
+conexao <- bigrquery::dbConnect(
+  bigrquery::bigquery(),
+  project = "basedosdados",
+  dataset = "br_me_rais",
+  billing = "rais-pmsb"
+)
+
+bigrquery::bq_auth("pedrobarrosrjsp@gmail.com")
+
+
+microdados_port_2019 <- tbl(conexao, "microdados_vinculos") |>
+  select(everything()) |>
+   filter(
+     ano == 2019,
+     cbo_2002 == "517410" #Porteiro de edificio
+   ) |>
+  head(5000)
+
+microdados_port_2019 <- collect(microdados_port_2019)
+
+microdados_port_2019 |>
+  readr::write_rds(
+    "C://Users/pedro/ProjetosR/RAIS/microdados_port_2019.rds"
+  )
+
+```

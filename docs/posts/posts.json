@@ -28,9 +28,9 @@
     ],
     "date": "2022-01-22",
     "categories": [],
-    "contents": "\r\nEsse é o meu primeiro projeto, então paciência, gente.\r\n\r\n\r\n\r\n",
+    "contents": "\r\nEsse é o meu primeiro projeto, então paciência, gente.\r\n\r\n\r\n\r\n#Conectando Conectando com o datalake da Base dos Dados:\r\n\r\n\r\n\r\n#Perguntas de pesquisa 1. Quanto ganha um arquivista? 1. Como a remuneração varia: 1.regionalmente? 1.por raça? 1.por gênero? 1. Em que mês e região houve aceleração da contratação de arquivistas ao longo do ano?\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-01-22T13:43:40-03:00",
+    "last_modified": "2022-01-22T17:32:05-03:00",
     "input_file": "anlise-da-base-rais.knit.md"
   }
 ]
