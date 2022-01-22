@@ -1,0 +1,19 @@
+---
+title: "Análise da base RAIS"
+description: |
+  Analisar a remuneração dos arquivista de documentos (CBO:4151-05)
+author:
+  - name: Pedro Barros
+    url: https://example.com/norajones
+date: 2022-01-22
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Esse é o meu primeiro projeto, então paciência, gente.

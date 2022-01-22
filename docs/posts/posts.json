@@ -15,5 +15,22 @@
     "preview": {},
     "last_modified": "2022-01-22T13:17:45-03:00",
     "input_file": {}
+  },
+  {
+    "path": "posts/2022-01-22-anlise-da-base-rais/",
+    "title": "Análise da base RAIS",
+    "description": "Analisar a remuneração dos arquivista de documentos (CBO:4151-05)",
+    "author": [
+      {
+        "name": "Pedro Barros",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2022-01-22",
+    "categories": [],
+    "contents": "\r\nEsse é o meu primeiro projeto, então paciência, gente.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-01-22T13:43:40-03:00",
+    "input_file": "anlise-da-base-rais.knit.md"
   }
 ]
