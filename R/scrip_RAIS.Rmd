@@ -7,6 +7,7 @@ output: html_document
 #Pacotes utilizados nesta analise:
 library(bigrquery)
 library(dplyr)
+library(ggplot2)
 
 ```
 
@@ -23,20 +24,61 @@ conexao <- bigrquery::dbConnect(
 
 bigrquery::bq_auth("pedrobarrosrjsp@gmail.com")
 
+cbo_2002_cd <- c("252515", "252525", "211110",
+                 "211205", "211210", "411035",
+                 "211210", "131120", "211215")
 
-microdados_port_2019 <- tbl(conexao, "microdados_vinculos") |>
+microdados_cd_2013up <- tbl(conexao, "microdados_vinculos") |>
   select(everything()) |>
    filter(
-     ano == 2019,
-     cbo_2002 == "517410" #Porteiro de edificio
-   ) |>
-  head(5000)
+     ano >= 2013,
+     ano <= 2021,
+     cbo_2002 %in% cbo_2002_cd
+   )
 
-microdados_port_2019 <- collect(microdados_port_2019)
+microdados_cd_2013up <- collect(microdados_cd_2013up)
 
-microdados_port_2019 |>
+microdados_cd_2013up |>
   readr::write_rds(
-    "C://Users/pedro/ProjetosR/RAIS/microdados_port_2019.rds"
+    "~/ProjetosR/portfolio_pedro/data/microdados_cd_2013up.rds",
+    compress = "xz"
   )
 
 ```
+
+#Perguntas de pesquisa:
+
+Pergunta ampla:
+1. Quando ganha uma pessoa que trabalha com ciência de dados?
+
+Perguntas específicas:
+1. Como o valor varia ao longo dos anos?
+1. Como o valor varia regionalmente?
+1. Como o valor varia em relação às características pessoais?
+    1. Gênero;
+    1. Raça;
+    1. Idade.
+1. Há algum setor da economia (CNAE) em que as contratações estão acelerando?
+1. Em qual setor da economia (CNAE) os cientistas de dados ganham mais?
+
+Escopo:
+CBO_2002:
+Ano: a partir de 2013, pois antes disso é difícil de falar em "cientista de dados" antes disso.
+
+Gráfico e tabela de remuneração média anual:
+```{r}
+
+#Remuneração média por ano:
+tabela_remun_med_anual <- microdados_cd_2013up |>
+  group_by(ano) |>
+  summarise(remun_med = mean(valor_remuneracao_media))
+
+tabela_remun_med_anual |>
+  ggplot(aes(x = ano, y = remun_med))+
+  geom_col()+
+  scale_x_continuous(breaks = 2013:2021)
+
+knitr::kable(tabela_remun_med_anual)
+
+```
+
