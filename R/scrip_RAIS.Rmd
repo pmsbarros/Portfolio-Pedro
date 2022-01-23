@@ -3,18 +3,20 @@ title: "Analise RAIS"
 output: html_document
 ---
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 #Pacotes utilizados nesta analise:
 library(bigrquery)
 library(dplyr)
 library(ggplot2)
-
+library(forcats)
 ```
 
 #Conectando
 Conectando com o datalake da Base dos Dados:
 
-```{r}
+```{r, eval=FALSE, echo=FALSE, warning=FALSE}
+#eval=FALSE porque nao precisa rodar esse chunk nas proximas vezes,
+#caso o arquivo ja esteja salvo localmente.
 conexao <- bigrquery::dbConnect(
   bigrquery::bigquery(),
   project = "basedosdados",
@@ -28,6 +30,7 @@ cbo_2002_cd <- c("252515", "252525", "211110",
                  "211205", "211210", "411035",
                  "211210", "131120", "211215")
 
+#Essa pesquisa custa 270GB quando for coletada.
 microdados_cd_2013up <- tbl(conexao, "microdados_vinculos") |>
   select(everything()) |>
    filter(
@@ -44,6 +47,7 @@ microdados_cd_2013up |>
     compress = "xz"
   )
 
+remove(conexao, cbo_2002_cd)
 ```
 
 #Perguntas de pesquisa:
@@ -65,8 +69,15 @@ Escopo:
 CBO_2002:
 Ano: a partir de 2013, pois antes disso é difícil de falar em "cientista de dados" antes disso.
 
+##Como o valor varia ao longo dos anos?
+
 Gráfico e tabela de remuneração média anual:
 ```{r}
+#Se ja tiver salvo o arquivo localmente, carregar aqui.
+#Se nao, voltar no chunk anterior e baixar.
+microdados_cd_2013up <- readr::read_rds(
+  "~/ProjetosR/portfolio_pedro/data/microdados_cd_2013up.rds"
+)
 
 #Remuneração média por ano:
 tabela_remun_med_anual <- microdados_cd_2013up |>
@@ -80,5 +91,72 @@ tabela_remun_med_anual |>
 
 knitr::kable(tabela_remun_med_anual)
 
+remove(tabela_remun_med_anual)
 ```
+
+##Como o valor varia regionalmente?
+Corte temporal: 2017 a 2020, quando os salários estagnaram.
+
+```{r}
+tabela_uf_media_2017up <- microdados_cd_2013up |>
+  filter(ano >= 2017) |>
+  mutate(
+    sigla_uf = as_factor(sigla_uf),
+    sigla_uf = fct_reorder(sigla_uf, valor_remuneracao_media, mean)
+  ) |>
+  group_by(sigla_uf) |>
+  summarise(remun_med = mean(valor_remuneracao_media), .groups = "drop")
+
+tabela_uf_media_2017up |>
+  ggplot(aes(y = sigla_uf, x = remun_med))+
+  geom_col()+
+  labs(y = "UF", x = "Remuneração média (R$, 2017 a 2020)")
+
+remove(tabela_uf_media_2017up)
+```
+
+##Como o valor varia em relação às características pessoais? Gênero
+    
+```{r}
+microdados_cd_2013up |>
+  group_by(sexo) |>
+  summarise(
+    remun_med    = mean(valor_remuneracao_media),
+    remun_median = median(valor_remuneracao_media),
+    .groups = "drop") |>
+  knitr::kable()
+
+
+
+```
+
+##Como o valor varia em relação às características pessoais? Raça
+
+```{r}
+microdados_cd_2013up |>
+  group_by(raca_cor) |>
+  summarise(
+    remun_med    = mean(valor_remuneracao_media),
+    remun_median = median(valor_remuneracao_media),
+    .groups = "drop") |>
+  knitr::kable()
+
+```
+
+
+##Como o valor varia em relação às características pessoais? Idade
+
+```{r}
+microdados_cd_2013up |>
+  group_by(idade) |>
+  summarise(
+    remun_med    = mean(valor_remuneracao_media),
+    remun_median = median(valor_remuneracao_media),
+    .groups = "drop") |>
+  knitr::kable()
+
+```
+
+
+
 
