@@ -3,6 +3,7 @@ title: "Portfolio Pedro"
 description: |
   Portfolio Pedro
 output_dir: "docs"
+theme: tema_aleatorio.css
 navbar:
   right:
     - text: "Home"

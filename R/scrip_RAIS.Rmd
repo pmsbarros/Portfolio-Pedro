@@ -1,6 +1,9 @@
 ---
 title: "Analise RAIS"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -11,7 +14,8 @@ library(ggplot2)
 library(forcats)
 ```
 
-#Conectando
+# Conectando
+
 Conectando com o datalake da Base dos Dados:
 
 ```{r, eval=FALSE, echo=FALSE, warning=FALSE}
@@ -50,28 +54,37 @@ microdados_cd_2013up |>
 remove(conexao, cbo_2002_cd)
 ```
 
-#Perguntas de pesquisa:
+# Perguntas de pesquisa:
 
-Pergunta ampla:
-1. Quando ganha uma pessoa que trabalha com ciência de dados?
+Pergunta ampla: 1. Quando ganha uma pessoa que trabalha com ciência de
+dados?
 
 Perguntas específicas:
-1. Como o valor varia ao longo dos anos?
-1. Como o valor varia regionalmente?
-1. Como o valor varia em relação às características pessoais?
-    1. Gênero;
-    1. Raça;
-    1. Idade.
-1. Há algum setor da economia (CNAE) em que as contratações estão acelerando?
-1. Em qual setor da economia (CNAE) os cientistas de dados ganham mais?
 
-Escopo:
-CBO_2002:
-Ano: a partir de 2013, pois antes disso é difícil de falar em "cientista de dados" antes disso.
+1.  Como o valor varia ao longo dos anos?
 
-##Como o valor varia ao longo dos anos?
+2.  Como o valor varia regionalmente?
+
+3.  Como o valor varia em relação às características pessoais?
+
+    1.  Gênero;
+
+    2.  Raça;
+
+    3.  Idade.
+
+4.  Há algum setor da economia (CNAE) em que as contratações estão
+    acelerando?
+
+5.  Em qual setor da economia (CNAE) os cientistas de dados ganham mais?
+
+Recorte: CBO_2002: Ano: a partir de 2013, pois antes disso é difícil de
+falar em "cientista de dados" antes disso.
+
+## Como o valor varia ao longo dos anos?
 
 Gráfico e tabela de remuneração média anual:
+
 ```{r}
 #Se ja tiver salvo o arquivo localmente, carregar aqui.
 #Se nao, voltar no chunk anterior e baixar.
@@ -94,7 +107,8 @@ knitr::kable(tabela_remun_med_anual)
 remove(tabela_remun_med_anual)
 ```
 
-##Como o valor varia regionalmente?
+## Como o valor varia regionalmente?
+
 Corte temporal: 2017 a 2020, quando os salários estagnaram.
 
 ```{r}
@@ -115,8 +129,8 @@ tabela_uf_media_2017up |>
 remove(tabela_uf_media_2017up)
 ```
 
-##Como o valor varia em relação às características pessoais? Gênero
-    
+## Como o valor varia em relação às características pessoais? Gênero
+
 ```{r}
 microdados_cd_2013up |>
   group_by(sexo) |>
@@ -130,7 +144,7 @@ microdados_cd_2013up |>
 
 ```
 
-##Como o valor varia em relação às características pessoais? Raça
+## Como o valor varia em relação às características pessoais? Raça
 
 ```{r}
 microdados_cd_2013up |>
@@ -143,8 +157,7 @@ microdados_cd_2013up |>
 
 ```
 
-
-##Como o valor varia em relação às características pessoais? Idade
+## Como o valor varia em relação às características pessoais? Idade
 
 ```{r}
 microdados_cd_2013up |>
@@ -157,6 +170,6 @@ microdados_cd_2013up |>
 
 ```
 
-
-
-
+```{r, eval=FALSE}
+distill::create_theme("tema_aleatorio")
+```
